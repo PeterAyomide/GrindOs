@@ -61,7 +61,11 @@ export default function GrindOSPage() {
   const toggleCustomTask = useGrindStore((s) => s.toggleCustomTask);
 
   // Computed: which tasks are locked (ordering enforcement)
-  const lockedTaskIds = useGrindStore((s) => s.lockedTaskIds());
+  // IMPORTANT: call lockedTaskIds() OUTSIDE the selector so Zustand only
+  // subscribes to the stable function reference, not the new Set it returns.
+  // Calling it inside the selector returns a new Set every time → infinite loop.
+  const getLockedTaskIds = useGrindStore((s) => s.lockedTaskIds);
+  const lockedTaskIds = getLockedTaskIds();
 
   // ── Lockout gate ───────────────────────────────────────────────────────────
   if (!protocolStartTime) {
