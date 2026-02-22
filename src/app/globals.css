@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global resets & overrides ───────────────────────────────────────────── */
+
+:root {
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-red: #ff0000;
+}
+
+/* Force monospace everywhere — the entire UI is a terminal */
+* {
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #000000;
+  color: #ffffff;
+  /* Prevent mobile bounce scrolling that breaks the full-height layout */
+  overscroll-behavior: none;
+}
+
+/* Remove default browser button/input styling */
+button {
+  cursor: pointer;
+}
+
+/* Kill all selection highlight color — terminal aesthetic */
+::selection {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Scrollbar — dark, hard edge */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #333333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+/* Tabular number rendering for all numerical displays */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

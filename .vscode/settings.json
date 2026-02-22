@@ -1,0 +1,12 @@
+{
+  // Use the project's installed TypeScript — not VS Code's bundled version.
+  // This ensures paths, generics, and module resolution match what `next build` sees.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Suppress the "@tailwind" unknown-at-rule CSS warning.
+  // This is a valid Tailwind directive; VS Code's CSS language server just
+  // doesn't understand it. The build handles it correctly via PostCSS.
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
+}
