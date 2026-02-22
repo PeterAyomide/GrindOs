@@ -15,10 +15,20 @@ import { TASK_DEFINITIONS, useGrindStore } from "@/store/useGrindStore";
 export function ProgressBar() {
   const progressPercent = useGrindStore((s) => s.progressPercent());
   const tasks = useGrindStore((s) => s.tasks);
+  const customTasks = useGrindStore((s) => s.customTasks);
+  const customTaskCompletions = useGrindStore((s) => s.customTaskCompletions);
   const isDayComplete = useGrindStore((s) => s.isDayComplete());
 
-  const completedCount = TASK_DEFINITIONS.filter((t) => tasks[t.id]).length;
-  const total = TASK_DEFINITIONS.length;
+  const builtinDone = TASK_DEFINITIONS.filter((t) => tasks[t.id]).length;
+  const customDone = customTasks.filter((t) => customTaskCompletions[t.id]).length;
+  const completedCount = builtinDone + customDone;
+  const total = TASK_DEFINITIONS.length + customTasks.length;
+
+  // Combined task IDs + completion for segment ticks
+  const allSegments = [
+    ...TASK_DEFINITIONS.map((t) => ({ id: t.id, done: tasks[t.id], label: t.label })),
+    ...customTasks.map((t) => ({ id: t.id, done: customTaskCompletions[t.id] ?? false, label: t.label })),
+  ];
 
   return (
     <div className="space-y-2">
@@ -56,15 +66,13 @@ export function ProgressBar() {
         />
       </div>
 
-      {/* Segment ticks — one per task */}
+      {/* Segment ticks — one per task (built-in + custom) */}
       <div className="flex gap-1">
-        {TASK_DEFINITIONS.map((task) => (
+        {allSegments.map((seg) => (
           <div
-            key={task.id}
-            className={`flex-1 h-1 ${
-              tasks[task.id] ? "bg-white" : "bg-white/15"
-            }`}
-            title={task.label}
+            key={seg.id}
+            className={`flex-1 h-1 ${seg.done ? "bg-white" : "bg-white/15"}`}
+            title={seg.label}
             aria-hidden="true"
           />
         ))}
